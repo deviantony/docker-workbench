@@ -22,9 +22,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock    
       - portainer_data_ce:/data
     labels:
-      caddy: "https://container-sandbox.local"
-      caddy.handle_path: /portainer-be*
-      caddy.handle_path.0_reverse_proxy: "{{upstreams 9443}}"
+      caddy: "http://container-sandbox.local"
+      caddy.handle_path: /portainer-ce*
+      caddy.handle_path.0_reverse_proxy: "{{upstreams 9000}}"
       caddy.handle_path.1_reverse_proxy: "{{upstreams 8000}}"
 
   portainer-be:
@@ -36,9 +36,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock    
       - portainer_data_be:/data    
     labels:
-      caddy: "https://container-sandbox.local"
-      caddy.handle_path: /portainer-ce*
-      caddy.handle_path.0_reverse_proxy: "{{upstreams 9443}}"
+      caddy: "http://container-sandbox.local"
+      caddy.handle_path: /portainer-be*
+      caddy.handle_path.0_reverse_proxy: "{{upstreams 9000}}"
       caddy.handle_path.1_reverse_proxy: "{{upstreams 8000}}"
 
   registry:
