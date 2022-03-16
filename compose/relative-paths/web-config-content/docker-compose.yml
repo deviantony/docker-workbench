@@ -7,9 +7,6 @@ services:
     configs:
       - source: index
         target: /usr/share/nginx/html/index.html
-        # mode: 0644
-        # owner: root:root
-        # group: root:root
 configs:
   index:
     file: ./www/index.html
