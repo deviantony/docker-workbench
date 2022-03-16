@@ -18,7 +18,6 @@ COPY --from=docker:dind /usr/local/bin/docker /usr/local/bin/
 
 # Example usage can be found in images/portainer/sind-conductor/Dockerfile
 # and https://github.com/deviantony/templates/blob/bca33c890267b99463c3ce93efdd180e43919e4f/compose/portainer-swarm-cluster-1m-2w/docker-compose.yml#L19-L23
-
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
 
