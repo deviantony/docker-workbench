@@ -8,9 +8,14 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
     build-essential \
  && rm -rf /var/lib/apt/lists/*
 
-## Installing Docker in an image
+## Installing Docker in the image
 # Use the following snippet to install the Docker CLI binary in the image
 COPY --from=docker:dind /usr/local/bin/docker /usr/local/bin/
+
+## Install docker compose plugin in the image
+RUN mkdir -p ~/.docker/cli-plugins/ && \
+    curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose && \
+    chmod +x ~/.docker/cli-plugins/docker-compose
 
 ## Waiting for other services to be ready (Compose use case)
 # Use the following tool if you need to wait for other services to be ready
