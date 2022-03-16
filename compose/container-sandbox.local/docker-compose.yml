@@ -16,6 +16,8 @@ services:
   portainer-ce:
     image: portainer/portainer-ce:2.11.1-alpine
     restart: unless-stopped
+    networks:
+      - caddy    
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock    
       - portainer_data_ce:/data
