@@ -1,0 +1,49 @@
+services:
+  caddy:
+    image: lucaslorentz/caddy-docker-proxy:ci-alpine
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - CADDY_INGRESS_NETWORKS=caddy
+    networks:
+      - caddy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy_data:/data
+    restart: unless-stopped
+  
+  web1:
+    image: nginx:alpine
+    volumes:
+      - ./www:/usr/share/nginx/html    
+    networks:
+      - caddy
+    labels:
+      caddy: "http://container-sandbox.local"
+      caddy.handle_path: /web1/*
+      caddy.handle_path.0_reverse_proxy: "{{upstreams 80}}"
+
+  web2:
+    image: nginx:alpine
+    networks:
+      - caddy
+    labels:
+      caddy: "http://container-sandbox.local"
+      caddy.handle_path: /web2/*
+      caddy.handle_path.0_reverse_proxy: "{{upstreams 80}}"      
+
+  whoami:
+    image: jwilder/whoami
+    networks:
+      - caddy
+    labels:
+      caddy: http://container-sandbox.local
+      caddy.reverse_proxy: "{{upstreams 8000}}"
+
+networks:
+  caddy:
+    external: true
+
+volumes:
+  caddy_data: {}
