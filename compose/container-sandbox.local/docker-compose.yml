@@ -16,6 +16,11 @@ services:
   portainer-ce:
     image: portainer/portainer-ce:2.11.1-alpine
     restart: unless-stopped
+    # For Edge deployments, as TCP reverse proxy is not supported by Caddy
+    # Port range 10000-19999 for CE
+    ports:
+      - 19443:9443
+      - 18000:8000
     networks:
       - caddy    
     volumes:
@@ -30,6 +35,11 @@ services:
   portainer-be:
     image: portainer/portainer-ee:2.12.1-alpine
     restart: unless-stopped
+    # For Edge deployments, as TCP reverse proxy is not supported by Caddy
+    # Port range 20000-29999 for BE
+    ports:
+      - 29443:9443
+      - 28000:8000    
     networks:
       - caddy    
     volumes:
