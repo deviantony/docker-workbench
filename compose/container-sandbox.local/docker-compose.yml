@@ -20,7 +20,8 @@ services:
     # Port range 10000-19999 for CE
     ports:
       - 19443:9443
-      - 18000:8000
+      - 18000:18000
+    command: --tunnel-port 18000
     networks:
       - caddy    
     volumes:
@@ -30,7 +31,6 @@ services:
       caddy: "http://container-sandbox.local"
       caddy.handle_path: /portainer-ce*
       caddy.handle_path.0_reverse_proxy: "{{upstreams 9000}}"
-      caddy.handle_path.1_reverse_proxy: "{{upstreams 8000}}"
 
   portainer-be:
     image: portainer/portainer-ee:2.12.1-alpine
@@ -39,7 +39,8 @@ services:
     # Port range 20000-29999 for BE
     ports:
       - 29443:9443
-      - 28000:8000    
+      - 28000:28000
+    command: --tunnel-port 28000      
     networks:
       - caddy    
     volumes:
@@ -49,7 +50,6 @@ services:
       caddy: "http://container-sandbox.local"
       caddy.handle_path: /portainer-be*
       caddy.handle_path.0_reverse_proxy: "{{upstreams 9000}}"
-      caddy.handle_path.1_reverse_proxy: "{{upstreams 8000}}"
 
   registry:
     image: registry:2
