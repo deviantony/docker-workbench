@@ -2,8 +2,12 @@ services:
   agent:
     # Image must be set to latest or to a specific tag that watchtower can watch
     # The tag must be updated when a new version is available
-    image: portainer/agent:latest
+    image: deviantony/agent:latest
     container_name: portainer_agent
+    # Required for watchtower to work properly, however should not be needed in agent >= 2.12.2
+    # This is because watchtower copies the container configuration of the existing container before re-creating a new one - including its hostname.
+    # See https://github.com/portainer/agent/issues/203#issuecomment-894815095
+    hostname: portainer_agent
     environment:
       - EDGE=1
       - EDGE_INSECURE_POLL=1
@@ -23,7 +27,7 @@ services:
     image: containrrr/watchtower:latest
     container_name: auto_updater
     # Only manage Portainer agent auto-upgrade and cleanup old Docker image afterwards (default polling interval is 24h) 
-    command: portainer_agent --cleanup 
+    command: portainer_agent --cleanup --interval 60
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
