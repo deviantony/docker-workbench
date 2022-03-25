@@ -2,7 +2,7 @@ services:
   agent:
     # Image must be set to latest or to a specific tag that watchtower can watch
     # The tag must be updated when a new version is available
-    image: deviantony/agent:latest
+    image: portainer/agent:latest
     container_name: portainer_agent
     # Required for watchtower to work properly, however should not be needed in agent >= 2.12.2
     # This is because watchtower copies the container configuration of the existing container before re-creating a new one - including its hostname.
