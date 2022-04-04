@@ -27,7 +27,7 @@ services:
     image: containrrr/watchtower:latest
     container_name: auto_updater
     # Only manage Portainer agent auto-upgrade and cleanup old Docker image afterwards (default polling interval is 24h) 
-    command: portainer_agent --cleanup --interval 60
+    command: portainer_agent --cleanup
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
