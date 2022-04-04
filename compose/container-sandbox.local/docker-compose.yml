@@ -33,7 +33,7 @@ services:
       caddy.handle_path.0_reverse_proxy: "{{upstreams 9000}}"
 
   portainer-be:
-    image: portainer/portainer-ee:2.12.1-alpine
+    image: portainer/portainer-ee:2.12.2-alpine
     restart: unless-stopped
     # For Edge deployments, as TCP reverse proxy is not supported by Caddy
     # Port range 20000-29999 for BE
