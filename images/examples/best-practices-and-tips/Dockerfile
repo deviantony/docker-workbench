@@ -1,12 +1,5 @@
 FROM ubuntu:20.04
 
-## Installing the root certificates in a scratch image
-FROM alpine:3.6 as base
-RUN apk add -U --no-cache ca-certificates
-
-FROM scratch
-COPY --from=base /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-
 ## Installing packages
 # Re-use the following snippet to properly install packages and clean up the system (for debian based images)
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
