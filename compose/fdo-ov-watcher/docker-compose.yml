@@ -12,6 +12,8 @@ services:
   web-server:
     image: caddy:latest
     restart: unless-stopped
+    ports:
+      - 8077:80
     volumes:
       - type: volume
         source: caddy-data
