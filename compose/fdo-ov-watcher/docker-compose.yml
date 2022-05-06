@@ -20,7 +20,7 @@ services:
         target: /data
       - type: bind
         source: ./ov_output
-        target: /ov_output
+        target: /usr/share/caddy
 
 configs:
   ov-watcher-config:
