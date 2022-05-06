@@ -1,0 +1,28 @@
+services:
+  ov-watcher:
+    image: deviantony/fdo-ov-watcher
+    restart: unless-stopped
+    configs:
+      - source: ov-watcher-config
+        target: /config.yml
+    volumes:
+      - type: bind
+        source: ./ov_output
+        target: /ov_output
+  web-server:
+    image: caddy:latest
+    restart: unless-stopped
+    volumes:
+      - type: volume
+        source: caddy-data
+        target: /data
+      - type: bind
+        source: ./ov_output
+        target: /ov_output
+
+configs:
+  ov-watcher-config:
+    file: ./config/config.yml
+
+volumes:
+  caddy-data:

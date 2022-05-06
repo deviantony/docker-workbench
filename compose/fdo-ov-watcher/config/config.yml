@@ -1,0 +1,9 @@
+fdo:
+  owner:
+    url: https://IP:8443
+    username: apiUser
+    password: PWD
+
+output:
+  target_dir: ov_output
+  scrape_period: 10s
