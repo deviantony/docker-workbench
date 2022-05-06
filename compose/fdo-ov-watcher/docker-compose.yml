@@ -14,6 +14,9 @@ services:
     restart: unless-stopped
     ports:
       - 8077:80
+    configs:
+      - source: caddy-config
+        target: /etc/caddy/Caddyfile
     volumes:
       - type: volume
         source: caddy-data
@@ -25,6 +28,8 @@ services:
 configs:
   ov-watcher-config:
     file: ./config/config.yml
+  caddy-config:
+    file: ./config/Caddyfile
 
 volumes:
   caddy-data:
