@@ -1,4 +1,16 @@
 services:
+  portainer:
+    image: portainerci/portainer:pr6864
+    ports:
+      - 9443:9443
+      - 8000:8000
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: volume
+        source: portainer_data
+        target: /data
   ov-watcher:
     image: deviantony/fdo-ov-watcher
     restart: unless-stopped
@@ -27,3 +39,6 @@ configs:
     file: ./config/config.yml
   nginx-config:
     file: ./config/default.conf
+
+volumes:
+  portainer_data:
