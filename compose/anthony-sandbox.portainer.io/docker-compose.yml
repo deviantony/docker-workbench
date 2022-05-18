@@ -1,0 +1,62 @@
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - REGISTRY_USER=${REGISTRY_USER}
+      - REGISTRY_PASSWORD=${REGISTRY_PASSWORD}
+    networks:
+      - caddy
+    volumes:
+      - ./caddy:/etc/caddy
+      - caddy_data:/data
+  
+  portainer-ce:
+    image: portainer/portainer-ce:2.13.1-alpine
+    restart: unless-stopped
+    # For Edge deployments, as TCP reverse proxy is not supported by Caddy
+    # Port range 10000-19999 for CE
+    ports:
+      - 19443:9443
+      - 18000:18000
+    command: --tunnel-port 18000
+    networks:
+      - caddy    
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock    
+      - portainer_data_ce:/data
+
+  portainer-be:
+    image: portainer/portainer-ee:2.13.1-alpine
+    restart: unless-stopped
+    # For Edge deployments, as TCP reverse proxy is not supported by Caddy
+    # Port range 20000-29999 for BE
+    ports:
+      - 29443:9443
+      - 28000:28000
+    command: --tunnel-port 28000      
+    networks:
+      - caddy    
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock    
+      - portainer_data_be:/data    
+
+  registry:
+    image: registry:2
+    restart: unless-stopped
+    networks:
+      - caddy    
+    volumes:
+      - registry_data:/var/lib/registry
+
+networks:
+  caddy:
+
+volumes:
+  caddy_data:
+  portainer_data_ce:
+  portainer_data_be:
+  registry_data:

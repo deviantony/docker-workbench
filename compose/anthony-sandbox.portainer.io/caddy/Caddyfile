@@ -1,0 +1,18 @@
+(auth) {
+	basicauth {
+		{$REGISTRY_USER} {$REGISTRY_PASSWORD}
+	}
+}
+
+anthony-sandbox-ce.portainer.io {
+  reverse_proxy portainer-ce:9000
+}
+
+anthony-sandbox-be.portainer.io {
+  reverse_proxy portainer-be:9000
+}
+
+anthony-sandbox-registry.portainer.io {
+  import auth
+  reverse_proxy /v2/* http://registry:5000
+}
