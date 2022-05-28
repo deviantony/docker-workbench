@@ -5,7 +5,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
     wget \
     curl \
     iptables \
+	openssl \ 
     openssh-client \
+	iproute2 \
     supervisor \
  && rm -rf /var/lib/apt/lists/*
 
@@ -49,12 +51,12 @@ RUN mkdir -p ~/.docker/cli-plugins/ && \
     curl -SL "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o ~/.docker/cli-plugins/docker-compose && \
     chmod +x ~/.docker/cli-plugins/docker-compose
 
-COPY modprobe supervisor-entrypoint.sh /usr/local/bin/
+COPY modprobe dind-entrypoint.sh /usr/local/bin/
 COPY supervisor/ /etc/supervisor/conf.d/
 COPY logger.sh /opt/bash-utils/logger.sh
 
-RUN chmod +x /usr/local/bin/supervisor-entrypoint.sh /usr/local/bin/modprobe
+RUN chmod +x /usr/local/bin/dind-entrypoint.sh /usr/local/bin/modprobe
 VOLUME /var/lib/docker
 
-ENTRYPOINT ["supervisor-entrypoint.sh"]
+ENTRYPOINT ["dind-entrypoint.sh"]
 CMD ["/bin/bash"]
