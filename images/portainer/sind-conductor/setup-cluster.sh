@@ -8,6 +8,7 @@ MANAGER_TOKEN=""
 WORKER_TOKEN=""
 AGENT_PORT="${AGENT_PORT}"
 AGENT_VERSION="${AGENT_VERSION}"
+NIC="${NIC}"
 
 len=${#MANAGERS[@]}
 for (( i=0; i<$len; i++ )); do
@@ -23,7 +24,14 @@ for (( i=0; i<$len; i++ )); do
         echo "Initializing Swarm on ${MANAGER_REF}"
 
         # Init Swarm
-        docker exec ${CNTR} sh -c "docker swarm init"
+        if [[ -n ${NIC} ]];
+        then
+            # If the NIC parameter is set, we advertise on the specified NIC
+            docker exec ${CNTR} sh -c "docker swarm init --advertise-addr ${NIC}"
+        else
+            docker exec ${CNTR} sh -c "docker swarm init"
+        fi;
+        
 
         # Deploy the Portainer agent
         # We only deploy the Portainer agent when the AGENT_PORT and AGENT_VERSION variables are set.
