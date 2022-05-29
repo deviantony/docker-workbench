@@ -1,0 +1,74 @@
+services:
+
+  registry:
+    image: registry:2
+    networks:
+      - networkB
+
+  swarm-manager1:
+    image: deviantony/dind:20.10.16
+    privileged: true
+    stdin_open: true
+    tty: true
+    configs:
+      - source: docker_daemon_manager
+        target: /etc/docker/daemon.json
+      - source: setup_registry_mirror
+        target: /tmp/setup-registry-mirror.sh 
+    networks:
+      - networkA
+      - networkB
+    links:
+      - registry:registry.dev
+  
+  swarm-worker1:
+    image: deviantony/dind:20.10.16
+    privileged: true
+    stdin_open: true
+    tty: true
+    configs:
+      - source: docker_daemon_worker
+        target: /etc/docker/daemon.json    
+    networks:
+      - networkA
+    links:
+      - swarm-manager1:registry-mirror.dev
+  
+  swarm-worker2:
+    image: deviantony/dind:20.10.16
+    privileged: true
+    stdin_open: true
+    tty: true
+    configs:
+      - source: docker_daemon_worker
+        target: /etc/docker/daemon.json    
+    networks:
+      - networkA
+    links:
+      - swarm-manager1:registry-mirror.dev
+  
+  swarm-conductor:
+    image: deviantony/sind-conductor:latest
+    environment:
+      WAIT_HOSTS: swarm-manager1:2376, swarm-worker1:2376, swarm-worker2:2376
+      WAIT_TIMEOUT: 90
+      SWARM_MANAGERS: swarm-manager1
+      SWARM_WORKERS: swarm-worker1,swarm-worker2
+      NIC: eth0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - networkA
+
+networks:
+  networkA:
+    internal: true
+  networkB:
+
+configs:
+  docker_daemon_manager:
+    file: ./conf/daemon-manager.json
+  docker_daemon_worker:
+    file: ./conf/daemon-worker.json
+  setup_registry_mirror:
+    file: ./setup-registry-mirror.sh
