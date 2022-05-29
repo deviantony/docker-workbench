@@ -7,6 +7,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
     iptables \
 	openssl \ 
     openssh-client \
+	uuid-runtime \
+	iputils-ping \
 	iproute2 \
     supervisor \
  && rm -rf /var/lib/apt/lists/*
