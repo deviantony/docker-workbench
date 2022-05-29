@@ -51,7 +51,7 @@ services:
     image: deviantony/sind-conductor:latest
     environment:
       WAIT_HOSTS: swarm-manager1:2376, swarm-worker1:2376, swarm-worker2:2376
-      WAIT_TIMEOUT: 90
+      WAIT_TIMEOUT: 60
       SWARM_MANAGERS: swarm-manager1
       SWARM_WORKERS: swarm-worker1,swarm-worker2
       NIC: eth0
