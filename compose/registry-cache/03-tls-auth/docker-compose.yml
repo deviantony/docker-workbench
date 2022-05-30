@@ -2,6 +2,19 @@ services:
 
   registry:
     image: registry:2
+    environment:
+      - REGISTRY_AUTH=htpasswd
+      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
+      - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
+      - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt
+      - REGISTRY_HTTP_TLS_KEY=/certs/registry.key
+    secrets:
+      - source: htpasswd
+        target: /auth/htpasswd
+      - source: tls-cert
+        target: /certs/registry.crt
+      - source: tls-key
+        target: /certs/registry.key
     networks:
       - networkB
 
@@ -11,10 +24,17 @@ services:
     stdin_open: true
     tty: true
     configs:
-      - source: docker_daemon_manager
-        target: /etc/docker/daemon.json
       - source: setup_registry_mirror
-        target: /tmp/setup-registry-mirror.sh 
+        target: /tmp/setup-registry-mirror.sh
+    secrets:
+      - source: htpasswd-mirror
+        target: /auth/htpasswd
+      - source: tls-cert
+        target: /certs/registry.crt
+      - source: tls-key
+        target: /certs/registry.key
+      - source: tls-cert
+        target: /etc/docker/certs.d/registry.dev:5000/ca.crt
     networks:
       - networkA
       - networkB
@@ -28,7 +48,10 @@ services:
     tty: true
     configs:
       - source: docker_daemon_worker
-        target: /etc/docker/daemon.json    
+        target: /etc/docker/daemon.json  
+    secrets:
+      - source: tls-cert
+        target: /etc/docker/certs.d/registry-mirror.dev:5000/ca.crt
     networks:
       - networkA
     links:
@@ -41,7 +64,10 @@ services:
     tty: true
     configs:
       - source: docker_daemon_worker
-        target: /etc/docker/daemon.json    
+        target: /etc/docker/daemon.json
+    secrets:
+      - source: tls-cert
+        target: /etc/docker/certs.d/registry-mirror.dev:5000/ca.crt   
     networks:
       - networkA
     links:
@@ -72,3 +98,13 @@ configs:
     file: ./conf/daemon-worker.json
   setup_registry_mirror:
     file: ./setup-registry-mirror.sh
+
+secrets:
+  tls-cert:
+    file: ./certs/registry.crt
+  tls-key:
+    file: ./certs/registry.key
+  htpasswd:
+    file: ./auth/htpasswd
+  htpasswd-mirror:
+    file: ./auth/htpasswd-mirror

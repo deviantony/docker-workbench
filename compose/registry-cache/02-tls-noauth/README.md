@@ -1,5 +1,25 @@
 # Registry cache experimentation
 
+This experimentation will setup the following:
+
+* An unsecured (self-signed certs) **HTTPS** registry **without authentication** available at *registry.dev:5000*
+* An unsecured (self-signed certs) **HTTPS** registry mirror **without authentication** of *registry.dev:5000* available at *registry-mirror.dev:5000*
+* A Swarm cluster with 1 manager and two workers
+
+The registry is running in a regular bridge network with internet access.
+
+The Swarm workers are running inside an internal network **without internet access**.
+
+The Swarm manager is running in both networks and is hosting the the registry mirror.
+
+# Usage
+
+Create the required registry TLS configuration:
+
+```
+./setup-registry.sh
+```
+
 Deploy the stack:
 
 ```
@@ -61,4 +81,3 @@ services:
       placement:
         constraints: [node.role == worker]
 ```
-

@@ -1,0 +1,4 @@
+auth/htpasswd
+auth/htpasswd-mirror
+certs/registry.crt
+certs/registry.key

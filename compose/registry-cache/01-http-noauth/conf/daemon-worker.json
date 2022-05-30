@@ -1,4 +1,3 @@
 {
-    "insecure-registries": ["registry-mirror.dev:5000"],
     "registry-mirrors": ["http://registry-mirror.dev:5000"]
 } 
