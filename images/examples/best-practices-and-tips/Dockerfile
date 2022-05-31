@@ -8,6 +8,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
     build-essential \
  && rm -rf /var/lib/apt/lists/*
 
+# Alternative on Alpine based images
+RUN apk add --no-cache uuidgen
+
 ## Installing Docker in the image
 # Use the following snippet to install the Docker CLI binary in the image
 COPY --from=docker:dind /usr/local/bin/docker /usr/local/bin/
