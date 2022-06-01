@@ -29,6 +29,6 @@ docker run -d \
   -e EDGE_KEY=${EDGE_KEY} \
   -e EDGE_INSECURE_POLL=1 \
   --name portainer_edge_agent \
-  portainer/agent:2.13.1
+  portainerci/agent:develop
 
 /bin/sh
