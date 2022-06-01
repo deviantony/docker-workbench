@@ -12,7 +12,7 @@ pkill -s 0 tail
 
 echo "Docker is ready - loading agent image"
 
-docker load -i /agent-2.13.1.tar
+docker load -i /agent.tar
 
 echo "Agent image loaded - running agent"
 
