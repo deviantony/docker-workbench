@@ -28,6 +28,7 @@ docker run -d \
   -e EDGE_ID=$PORTAINER_EDGE_ID \
   -e EDGE_KEY=${EDGE_KEY} \
   -e EDGE_INSECURE_POLL=1 \
+  -e LOG_LEVEL=DEBUG \
   --name portainer_edge_agent \
   portainerci/agent:develop
 
