@@ -5,9 +5,9 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
+      - 8000:8000
 
   portainer1:
     image: portainer/portainer-ee:latest
-
-  portainer2:
-    image: portainer/portainer-ee:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
