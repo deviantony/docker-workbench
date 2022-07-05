@@ -15,7 +15,7 @@ services:
       - caddy_data:/data
   
   portainer-ce:
-    image: portainer/portainer-ce:2.13.1-alpine
+    image: portainer/portainer-ce:2.14.0-alpine
     restart: unless-stopped
     # For Edge deployments, as TCP reverse proxy is not supported by Caddy
     # Port range 10000-19999 for CE
@@ -30,7 +30,7 @@ services:
       - portainer_data_ce:/data
 
   portainer-be:
-    image: portainer/portainer-ee:2.13.1-alpine
+    image: portainer/portainer-ee:2.14.0-alpine
     restart: unless-stopped
     # For Edge deployments, as TCP reverse proxy is not supported by Caddy
     # Port range 20000-29999 for BE
